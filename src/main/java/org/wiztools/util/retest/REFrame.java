@@ -1,12 +1,12 @@
 package org.wiztools.util.retest;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +23,8 @@ import javax.swing.WindowConstants;
  * @author subhash
  */
 public class REFrame extends JFrame {
+
+    private static final int BORDER_LAYOUT_SPACING = 5;
 
     private JTextField jtf_re = new JTextField(40);
     private JTextArea jta_in = new JTextArea(10, 5);
@@ -54,7 +56,8 @@ public class REFrame extends JFrame {
         jta_in.setToolTipText("Input text");
         jta_out.setEditable(false);
         jta_out.setToolTipText("Result");
-        
+
+        jb_clear.setMnemonic('c');
         jb_clear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jta_out.setText("");
@@ -74,17 +77,22 @@ public class REFrame extends JFrame {
                     jtf_re.requestFocus();
                 }
                 else{
-                    Pattern p = Pattern.compile(re);
-                    Matcher m = p.matcher(input);
-                    if(m.find()){
-                        jta_out.append("<<Match found!>>\n\n");
-                        for(int i=1; i<=m.groupCount(); i++){
-                            jta_out.append("<<Group: " + i + ">>\n");
-                            jta_out.append("\t" + m.group(i) + "\n");
+                    try{
+                        Pattern p = Pattern.compile(re);
+                        Matcher m = p.matcher(input);
+                        if(m.find()){
+                            jta_out.append("<<Match found!>>\n\n");
+                            for(int i=1; i<=m.groupCount(); i++){
+                                jta_out.append("<<Group: " + i + ">>\n");
+                                jta_out.append("\t" + m.group(i) + "\n");
+                            }
+                        }
+                        else{
+                            jta_out.setText("<<Does not match!>>");
                         }
                     }
-                    else{
-                        jta_out.setText("<<Does not match!>>");
+                    catch(PatternSyntaxException ex){
+                        JOptionPane.showMessageDialog(me, ex.getMessage());
                     }
                 }
             }
@@ -93,16 +101,18 @@ public class REFrame extends JFrame {
 
     private JPanel initInput(){
         JPanel jp = new JPanel();
-        jp.setLayout(new BorderLayout());
+        jp.setLayout(new BorderLayout(BORDER_LAYOUT_SPACING,
+                BORDER_LAYOUT_SPACING));
 
         // North
         JPanel jp_north = new JPanel();
-        jp_north.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jp_north.setLayout(new BorderLayout(BORDER_LAYOUT_SPACING,
+                BORDER_LAYOUT_SPACING));
         JLabel jl = new JLabel("RE: ");
         jl.setDisplayedMnemonic('r');
         jl.setLabelFor(jtf_re);
-        jp_north.add(jl);
-        jp_north.add(jtf_re);
+        jp_north.add(jl, BorderLayout.WEST);
+        jp_north.add(jtf_re, BorderLayout.CENTER);
 
         jp.add(jp_north, BorderLayout.NORTH);
 
@@ -124,7 +134,8 @@ public class REFrame extends JFrame {
 
     private JPanel initOutput(){
         JPanel jp = new JPanel();
-        jp.setLayout(new BorderLayout());
+        jp.setLayout(new BorderLayout(BORDER_LAYOUT_SPACING,
+                BORDER_LAYOUT_SPACING));
         JScrollPane jsp = new JScrollPane(jta_out);
         jp.add(jsp, BorderLayout.CENTER);
         return jp;
