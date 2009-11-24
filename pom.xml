@@ -4,13 +4,13 @@
     <groupId>org.wiztools.util</groupId>
     <artifactId>re-test</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.0</version>
+    <version>0.3.0-SNAPSHOT</version>
     <name>re-test</name>
     <url>http://wiztools.googlecode.com/</url>
     <scm>
-        <connection>scm:svn:http://wiztools.googlecode.com/svn/re-test/tags/re-test-0.2.0</connection>
-        <developerConnection>scm:svn:https://wiztools.googlecode.com/svn/re-test/tags/re-test-0.2.0</developerConnection>
-        <url>scm:svn:https://wiztools.googlecode.com/svn/re-test/tags/re-test-0.2.0</url>
+        <connection>scm:svn:http://wiztools.googlecode.com/svn/re-test/trunk/</connection>
+        <developerConnection>scm:svn:https://wiztools.googlecode.com/svn/re-test/trunk/</developerConnection>
+        <url>http://code.google.com/p/wiztools/source/browse/</url>
     </scm>
     <build>
         <plugins>
