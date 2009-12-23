@@ -40,7 +40,7 @@ public class REFrame extends JFrame {
     private final JCheckBox jcb_multiline = new JCheckBox("Multi-line");
     // private JCheckBox jcb_comments = new JCheckBox("Ignore whitespaces & comments");
 
-    private final JLabel jl_status = new JLabel("WizTools.org RE Tester");
+    private final JLabel jl_status = new JLabel("WizTools.org RegularExpression Tester");
 
     public REFrame(String title){
         super(title);
@@ -105,7 +105,7 @@ public class REFrame extends JFrame {
 
         JPanel jp_north_1 = new JPanel();
         jp_north_1.setLayout(new BorderLayout());
-        JLabel jl = new JLabel("RE: ");
+        JLabel jl = new JLabel(" RE: ");
         jl.setDisplayedMnemonic('r');
         jl.setLabelFor(jtf_re);
         jp_north_1.add(jl, BorderLayout.WEST);
@@ -189,9 +189,11 @@ public class REFrame extends JFrame {
                             jta_out.append("\t" + s + "\n");
                         }
                     }
+                    setStatus("Matched :-)");
                 }
                 else{
                     jta_out.setText("<<Does not match!>>");
+                    setStatus("No match :-(");
                 }
             }
             catch(PatternSyntaxException ex){
