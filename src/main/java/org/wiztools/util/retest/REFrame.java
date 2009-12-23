@@ -1,6 +1,7 @@
 package org.wiztools.util.retest;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -10,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,7 +40,17 @@ public class REFrame extends JFrame {
     private final JCheckBox jcb_multiline = new JCheckBox("Multi-line");
     // private JCheckBox jcb_comments = new JCheckBox("Ignore whitespaces & comments");
 
+    private final ImageIcon IMAGE_WRONG = new ImageIcon(this.getClass().getClassLoader().getResource("org/wiztools/util/retest/cross.png"));
+    private final ImageIcon IMAGE_RIGHT = new ImageIcon(this.getClass().getClassLoader().getResource("org/wiztools/util/retest/tick.png"));
+
     private final JLabel jl_status = new JLabel("WizTools.org RegularExpression Tester");
+    private final JLabel jl_indicator = new JLabel(IMAGE_WRONG);
+
+    private final Font DIALOG_PLAIN_12 = new Font(Font.DIALOG, Font.PLAIN, 12);
+    private final Font DIALOG_BOLD_12 = new Font(Font.DIALOG, Font.BOLD, 12);
+
+    private final String MSG_PATTERN_WRONG = "Error compiling pattern";
+    private final String MSG_PATTERN_RIGHT = "Pattern compiles";
 
     public REFrame(String title){
         super(title);
@@ -58,6 +70,7 @@ public class REFrame extends JFrame {
     }
 
     private void init(){
+        // Set DocumentListener on Text Objects:
         final DocumentListener dl = new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 match();
@@ -75,6 +88,7 @@ public class REFrame extends JFrame {
         jtf_re.getDocument().addDocumentListener(dl);
         jta_in.getDocument().addDocumentListener(dl);
 
+        // Set the ItemListener on JComboBoxes:
         final ItemListener il = new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 match();
@@ -85,17 +99,25 @@ public class REFrame extends JFrame {
         jcb_dotall.addItemListener(il);
         jcb_multiline.addItemListener(il);
 
+        // Font:
+        jtf_re.setFont(DIALOG_BOLD_12);
+        jcb_caseinsensitive.setFont(DIALOG_PLAIN_12);
+        jcb_dotall.setFont(DIALOG_PLAIN_12);
+        jcb_multiline.setFont(DIALOG_PLAIN_12);
+        jl_status.setFont(DIALOG_PLAIN_12);
+
+        // Other configurations:
         jtf_re.setToolTipText("Regular Expression");
         jta_in.setToolTipText("Input text");
         jta_out.setEditable(false);
         jta_out.setToolTipText("Result");
-        jl_status.setFont(new Font(Font.DIALOG, Font.PLAIN, 12)); // 12 is the font size
+        jl_indicator.setToolTipText(MSG_PATTERN_WRONG);
+        jta_out.setBackground(new Color(250, 252, 170));
     }
 
     private JPanel initInput(){
         JPanel jp = new JPanel();
-        jp.setLayout(new BorderLayout(0,
-                0));
+        jp.setLayout(new BorderLayout());
 
         // North
         JPanel jp_north = new JPanel();
@@ -104,10 +126,12 @@ public class REFrame extends JFrame {
         JPanel jp_north_1 = new JPanel();
         jp_north_1.setLayout(new BorderLayout());
         JLabel jl = new JLabel(" RE: ");
+        jl.setFont(DIALOG_PLAIN_12);
         jl.setDisplayedMnemonic('r');
         jl.setLabelFor(jtf_re);
         jp_north_1.add(jl, BorderLayout.WEST);
         jp_north_1.add(jtf_re, BorderLayout.CENTER);
+        jp_north_1.add(jl_indicator, BorderLayout.EAST);
         jp_north.add(jp_north_1);
 
         JPanel jp_north_2 = new JPanel();
@@ -143,6 +167,16 @@ public class REFrame extends JFrame {
         return jp;
     }
 
+    private void setIndicatorRight(){
+        jl_indicator.setIcon(IMAGE_RIGHT);
+        jl_indicator.setToolTipText(MSG_PATTERN_RIGHT);
+    }
+
+    private void setIndicatorWrong(){
+        jl_indicator.setIcon(IMAGE_WRONG);
+        jl_indicator.setToolTipText(MSG_PATTERN_WRONG);
+    }
+
     private void setStatus(final String msg){
         jl_status.setText(msg);
     }
@@ -154,9 +188,9 @@ public class REFrame extends JFrame {
 
         final String re = jtf_re.getText();
         final String input = jta_in.getText();
-        if(re.trim().equals("")){
+        if(re.equals("")){
+            jl_indicator.setIcon(IMAGE_WRONG);
             setStatus("No RE given!");
-            jtf_re.requestFocus();
         }
         else{
             try{
@@ -175,14 +209,18 @@ public class REFrame extends JFrame {
                 }
 
                 Pattern p = Pattern.compile(re, option);
+                setIndicatorRight();
                 Matcher m = p.matcher(input);
                 if(m.find()){
                     jta_out.append("<<Match found!>>\n\n");
                     for(int i=1; i<=m.groupCount(); i++){
                         jta_out.append("<<Group: " + i + ">>\n");
-                        String[] arr = m.group(i).split("\n");
-                        for(String s: arr){
-                            jta_out.append("\t" + s + "\n");
+                        final String grp = m.group(i);
+                        if(grp != null){
+                            String[] arr = m.group(i).split("\n");
+                            for(String s: arr){
+                                jta_out.append("\t" + s + "\n");
+                            }
                         }
                     }
                     setStatus("Matched :-)");
@@ -195,7 +233,14 @@ public class REFrame extends JFrame {
             catch(PatternSyntaxException ex){
                 jta_out.append("<<Error!>>\n\n");
                 jta_out.append(ex.getMessage());
-                setStatus("Error compiling pattern");
+                setIndicatorWrong();
+                setStatus(MSG_PATTERN_WRONG);
+            }
+            catch(StringIndexOutOfBoundsException ex){
+                jta_out.append("<<Error!>>\n\n");
+                jta_out.append(ex.getMessage());
+                setIndicatorWrong();
+                setStatus(MSG_PATTERN_WRONG);
             }
         }
     }
