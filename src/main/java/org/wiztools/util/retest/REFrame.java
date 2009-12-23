@@ -148,7 +148,6 @@ public class REFrame extends JFrame {
 
     private void setStatus(final String msg){
         jl_status.setText(msg);
-        jl_status.setToolTipText(msg);
     }
 
     // Business logic:
@@ -197,7 +196,9 @@ public class REFrame extends JFrame {
                 }
             }
             catch(PatternSyntaxException ex){
-                setStatus(ex.getMessage());
+                jta_out.append("<<Error!>>\n\n");
+                jta_out.append(ex.getMessage());
+                setStatus("Error compiling pattern");
             }
         }
     }
