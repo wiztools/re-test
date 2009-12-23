@@ -189,7 +189,7 @@ public class REFrame extends JFrame {
         final String re = jtf_re.getText();
         final String input = jta_in.getText();
         if(re.equals("")){
-            jl_indicator.setIcon(IMAGE_WRONG);
+            setIndicatorWrong();
             setStatus("No RE given!");
         }
         else{
