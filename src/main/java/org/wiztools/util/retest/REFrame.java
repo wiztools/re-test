@@ -29,8 +29,6 @@ import javax.swing.event.DocumentListener;
  */
 public class REFrame extends JFrame {
 
-    private static final int BORDER_LAYOUT_SPACING = 5;
-
     private final JTextField jtf_re = new JTextField(40);
     private final JTextArea jta_in = new JTextArea(10, 5);
     private final JTextArea jta_out = new JTextArea(10, 5);
@@ -91,13 +89,13 @@ public class REFrame extends JFrame {
         jta_in.setToolTipText("Input text");
         jta_out.setEditable(false);
         jta_out.setToolTipText("Result");
-        jl_status.setFont(new Font(Font.DIALOG, Font.PLAIN, 12)); // 10 is the font size
+        jl_status.setFont(new Font(Font.DIALOG, Font.PLAIN, 12)); // 12 is the font size
     }
 
     private JPanel initInput(){
         JPanel jp = new JPanel();
-        jp.setLayout(new BorderLayout(BORDER_LAYOUT_SPACING,
-                BORDER_LAYOUT_SPACING));
+        jp.setLayout(new BorderLayout(0,
+                0));
 
         // North
         JPanel jp_north = new JPanel();
@@ -132,8 +130,7 @@ public class REFrame extends JFrame {
 
     private JPanel initOutput(){
         JPanel jp = new JPanel();
-        jp.setLayout(new BorderLayout(BORDER_LAYOUT_SPACING,
-                BORDER_LAYOUT_SPACING));
+        jp.setLayout(new BorderLayout());
         JScrollPane jsp = new JScrollPane(jta_out);
         jp.add(jsp, BorderLayout.CENTER);
 
