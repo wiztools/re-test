@@ -217,7 +217,7 @@ public class REFrame extends JFrame {
                         jta_out.append("<<Group: " + i + ">>\n");
                         final String grp = m.group(i);
                         if(grp != null){
-                            String[] arr = m.group(i).split("\n");
+                            String[] arr = grp.split("\n");
                             for(String s: arr){
                                 jta_out.append("\t" + s + "\n");
                             }
