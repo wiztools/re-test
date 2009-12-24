@@ -27,7 +27,7 @@ import javax.swing.event.DocumentListener;
 
 /**
  *
- * @author subhash
+ * @author subwiz
  */
 public class REFrame extends JFrame {
 
@@ -40,8 +40,10 @@ public class REFrame extends JFrame {
     private final JCheckBox jcb_multiline = new JCheckBox("Multi-line");
     // private JCheckBox jcb_comments = new JCheckBox("Ignore whitespaces & comments");
 
-    private final ImageIcon IMAGE_WRONG = new ImageIcon(this.getClass().getClassLoader().getResource("org/wiztools/util/retest/cross.png"));
-    private final ImageIcon IMAGE_RIGHT = new ImageIcon(this.getClass().getClassLoader().getResource("org/wiztools/util/retest/tick.png"));
+    private final ClassLoader cl = this.getClass().getClassLoader();
+    private final ImageIcon IMAGE_WRONG = new ImageIcon(cl.getResource("org/wiztools/util/retest/cross.png"));
+    private final ImageIcon IMAGE_RIGHT = new ImageIcon(cl.getResource("org/wiztools/util/retest/tick.png"));
+    private final ImageIcon IMAGE_APP = new ImageIcon(cl.getResource("org/wiztools/util/retest/lightning.png"));
 
     private final JLabel jl_status = new JLabel("WizTools.org RegularExpression Tester");
     private final JLabel jl_indicator = new JLabel(IMAGE_WRONG);
@@ -63,6 +65,7 @@ public class REFrame extends JFrame {
 
         this.getContentPane().add(jsp);
 
+        this.setIconImage(IMAGE_APP.getImage());
         this.pack();
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -217,7 +220,7 @@ public class REFrame extends JFrame {
                         jta_out.append("<<Group: " + i + ">>\n");
                         final String grp = m.group(i);
                         if(grp != null){
-                            String[] arr = grp.split("\n");
+                            final String[] arr = grp.split("\n");
                             for(String s: arr){
                                 jta_out.append("\t" + s + "\n");
                             }
