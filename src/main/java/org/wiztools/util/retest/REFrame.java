@@ -214,24 +214,34 @@ public class REFrame extends JFrame {
                 Pattern p = Pattern.compile(re, option);
                 setIndicatorRight();
                 Matcher m = p.matcher(input);
-                if(m.find()){
-                    jta_out.append("<<Match found!>>\n\n");
+                final StringBuilder sb = new StringBuilder();
+
+                int findIteration = 0;
+                while(m.find()){
+                    findIteration++;
+                    sb.append("\n<<Find iteration: ").append(findIteration).append(">>\n");
                     for(int i=1; i<=m.groupCount(); i++){
-                        jta_out.append("<<Group: " + i + ">>\n");
+                        sb.append("  <Group: " + i + ">\n");
                         final String grp = m.group(i);
                         if(grp != null){
                             final String[] arr = grp.split("\n");
                             for(String s: arr){
-                                jta_out.append("\t" + s + "\n");
+                                sb.append("\t" + s + "\n");
                             }
                         }
                     }
+                }
+                if(findIteration > 0){
+                    jta_out.append("<<Match found!>>\n\n");
+                    jta_out.append("Number of instances found: " + findIteration + "\n");
+                    jta_out.append(sb.toString());
                     setStatus("Matched :-)");
                 }
                 else{
                     jta_out.setText("<<Does not match!>>");
                     setStatus("No match :-(");
                 }
+                jta_out.setCaretPosition(0); // Scroll to the top!
             }
             catch(PatternSyntaxException ex){
                 jta_out.append("<<Error!>>\n\n");
