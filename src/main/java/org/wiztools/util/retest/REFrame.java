@@ -231,17 +231,18 @@ public class REFrame extends JFrame {
                         }
                     }
                 }
-                if(findIteration > 0){
+                final int findCount = findIteration;
+                if(findCount > 0){
                     jta_out.append("<<Match found!>>\n\n");
-                    jta_out.append("Number of instances found: " + findIteration + "\n");
+                    jta_out.append("Number of instances found: " + findCount + "\n");
                     jta_out.append(sb.toString());
+                    jta_out.setCaretPosition(0); // Scroll to the top!
                     setStatus("Matched :-)");
                 }
                 else{
                     jta_out.setText("<<Does not match!>>");
                     setStatus("No match :-(");
                 }
-                jta_out.setCaretPosition(0); // Scroll to the top!
             }
             catch(PatternSyntaxException ex){
                 jta_out.append("<<Error!>>\n\n");
