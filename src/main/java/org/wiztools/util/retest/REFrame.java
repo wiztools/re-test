@@ -216,10 +216,10 @@ public class REFrame extends JFrame {
                 Matcher m = p.matcher(input);
                 final StringBuilder sb = new StringBuilder();
 
-                int findIteration = 0;
+                int findInstance = 0;
                 while(m.find()){
-                    findIteration++;
-                    sb.append("\n<<Find iteration: ").append(findIteration).append(">>\n");
+                    findInstance++;
+                    sb.append("\n<<Find instance: ").append(findInstance).append(">>\n");
                     for(int i=1; i<=m.groupCount(); i++){
                         sb.append("  <Group: " + i + ">\n");
                         final String grp = m.group(i);
@@ -231,7 +231,7 @@ public class REFrame extends JFrame {
                         }
                     }
                 }
-                final int findCount = findIteration;
+                final int findCount = findInstance;
                 if(findCount > 0){
                     jta_out.append("<<Match found!>>\n\n");
                     jta_out.append("Number of instances found: " + findCount + "\n");
