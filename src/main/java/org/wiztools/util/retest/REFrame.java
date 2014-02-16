@@ -56,6 +56,10 @@ public class REFrame extends JFrame {
 
     public REFrame(String title){
         super(title);
+        this.setIconImage(new ImageIcon(
+                this.getClass().getClassLoader()
+                        .getResource("org/wiztools/util/retest/re-logo.png"))
+                .getImage());
         
         init();
 
@@ -75,14 +79,17 @@ public class REFrame extends JFrame {
     private void init(){
         // Set DocumentListener on Text Objects:
         final DocumentListener dl = new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 match();
             }
 
+            @Override
             public void removeUpdate(DocumentEvent e) {
                 match();
             }
 
+            @Override
             public void changedUpdate(DocumentEvent e) {
                 match();
             }
@@ -93,6 +100,7 @@ public class REFrame extends JFrame {
 
         // Set the ItemListener on JComboBoxes:
         final ItemListener il = new ItemListener() {
+            @Override
             public void itemStateChanged(ItemEvent e) {
                 match();
             }
@@ -221,12 +229,12 @@ public class REFrame extends JFrame {
                     findInstance++;
                     sb.append("\n<<Find instance: ").append(findInstance).append(">>\n");
                     for(int i=1; i<=m.groupCount(); i++){
-                        sb.append("  <Group: " + i + ">\n");
+                        sb.append("  <Group: ").append(i).append(">\n");
                         final String grp = m.group(i);
                         if(grp != null){
                             final String[] arr = grp.split("\n");
                             for(String s: arr){
-                                sb.append("\t" + s + "\n");
+                                sb.append("\t").append(s).append("\n");
                             }
                         }
                     }

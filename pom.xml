@@ -7,19 +7,25 @@
     <version>0.5.0-SNAPSHOT</version>
     <name>re-test</name>
     <url>https://github.com/wiztools/re-test</url>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
     <scm>
         <connection>scm:git:https://github.com/wiztools/re-test.git</connection>
         <developerConnection>scm:git:https://github.com/wiztools/re-test.git</developerConnection>
         <url>https://github.com/wiztools/re-test</url>
     </scm>
+    
     <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -34,6 +40,25 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.agiliumlabs.osxappbundle</groupId>
+                <artifactId>osxappbundle-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <mainClass>org.wiztools.util.retest.Main</mainClass>
+                    <bundleName>RegularExpression Tester</bundleName>
+                    <vmOptions>-Dcom.apple.macos.useScreenMenuBar=false</vmOptions>
+                    <iconFile>${basedir}/src/main/app-resources/mac-logo.icns</iconFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
