@@ -41,25 +41,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.agiliumlabs.osxappbundle</groupId>
-                <artifactId>osxappbundle-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <mainClass>org.wiztools.util.retest.Main</mainClass>
-                    <bundleName>RegularExpression Tester</bundleName>
-                    <vmOptions>-Dcom.apple.macos.useScreenMenuBar=false</vmOptions>
-                    <iconFile>${basedir}/src/main/app-resources/mac-logo.icns</iconFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
     <dependencies>
