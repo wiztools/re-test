@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="re-test" default="bundle" basedir=".">
+
+    <property environment="env" />
+    <property name="app.name" value="RETester"/>
+    <property name="app.name.big" value="RegularExpression Tester"/>
+    <property name="target.dir" value="target"/>
+    <property name="dmg.dir" value="${target.dir}/${app.name}"/>
+
+    <taskdef name="bundleapp"
+             classname="com.oracle.appbundler.AppBundlerTask"   
+             classpath="ant-lib/appbundler-1.0ea.jar" />
+    <taskdef name="xpath" classname="org.wiztools.ant.xpath.XPathTask"
+             classpath="ant-lib/ant-xpath-task-1.0-SNAPSHOT.jar"/>
+             
+    <target name="init">
+        <mkdir dir="${dmg.dir}"/>
+    </target>
+
+    <target name="bundle" depends="init">
+        <!-- Get Product Version -->
+        <xpath document="pom.xml"
+               xpath="/project/version"
+               outputproperty="prjVersion"/>
+        <echo>Project version: ${prjVersion}</echo>
+        
+        <!-- DMG name -->
+        <property name="dmg.bin" value="${target.dir}/${app.name}-${prjVersion}.dmg"/>
+        
+        <!-- Delete already existing file -->
+        <delete file="${dmg.bin}"/>
+        
+        <!-- Create bundle -->
+        <bundleapp outputdirectory="${dmg.dir}"
+            name="${app.name}"
+            displayname="WizTools.org RegularExpression Tester"
+            identifier="org.wiztools.util.retest"
+            mainclassname="org.wiztools.util.retest.Main"
+            icon="src/main/app-resources/mac-logo.icns"
+            shortversion="${prjVersion}">
+            <runtime dir="${env.JAVA_HOME}" />
+            <classpath file="target/re-test-${prjVersion}.jar" />
+            <option value="-Dapple.laf.useScreenMenuBar=true"/>
+            <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+            <option value="-Dapple.awt.application.name=${app.name.big}"/>
+            <option value="-Dfile.encoding=UTF-8"/>
+            <option value="-Xmx1024M" name="Xmx"/>
+        </bundleapp>
+        
+        <!-- Create DMG -->
+        <exec executable="hdiutil">
+            <arg value="create"/>
+            <arg value="-srcfolder"/>
+            <arg value="${dmg.dir}"/>
+            <arg value="${dmg.bin}"/>
+        </exec>
+        <exec executable="hdiutil">
+            <arg value="internet-enable"/>
+            <arg value="-yes"/>
+            <arg value="${dmg.bin}"/>
+        </exec>
+    </target>
+    
+    <target name="clean">
+        <delete dir="${dmg.dir}"/>
+        <delete file="${dmg.bin}"/>
+    </target>
+
+</project>
