@@ -37,7 +37,8 @@
             identifier="org.wiztools.util.retest"
             mainclassname="org.wiztools.util.retest.Main"
             icon="src/main/app-resources/mac-logo.icns"
-            shortversion="${prjVersion}">
+            shortversion="${prjVersion}"
+            applicationCategory="public.app-category.developer-tools">
             <runtime dir="${env.JAVA_HOME}" />
             <classpath file="target/re-test-${prjVersion}.jar" />
             <option value="-Dapple.laf.useScreenMenuBar=true"/>
