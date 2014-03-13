@@ -2,8 +2,8 @@
 <project name="re-test" default="bundle" basedir=".">
 
     <property environment="env" />
-    <property name="app.name" value="RETester"/>
-    <property name="app.name.big" value="RegularExpression Tester"/>
+    <property name="app.name" value="WizTools.org RegularExpression Tester"/>
+    <property name="app.name.big" value="WizTools.org RegularExpression Tester"/>
     <property name="target.dir" value="target"/>
     <property name="dmg.dir" value="${target.dir}/${app.name}"/>
 
